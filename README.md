@@ -1,6 +1,7 @@
 # Parallel Task Processor
 
-Jednoduchá konzolová Python aplikace, která zpracovává textové úlohy paralelně pomocí více vláken (model producent–konzument).
+Konzolová Python aplikace, která zpracovává textové úlohy **paralelně pomocí multiprocessing**.
+Jde o skutečnou paralelizaci, protože každý worker běží jako samostatný proces.
 
 ## 1. Autor
 - **Albert Schurrer**
@@ -8,9 +9,15 @@ Jednoduchá konzolová Python aplikace, která zpracovává textové úlohy para
 - **albert.schurrer@gmail.com**
 
 ## 2. Popis aplikace
-Uživatel zadává text, který se uloží jako úloha do thread-safe fronty.  
-Několik worker vláken úlohy paralelně zpracovává (uppercase).  
-Po příkazu `exit` aplikace počká na dokončení a vypíše výsledky.
+Uživatel zadává textové úlohy v konzoli.  
+Každá úloha se vloží do `multiprocessing.Queue` a několik worker procesů ji paralelně zpracovává (např. převod textu na uppercase).  
+Výsledky se vrací zpět přes druhou frontu a po příkazu `exit` se vše vypíše.
+
+Projekt demonstruje:
+- reálnou paralelizaci (multiprocessing),
+- model producent–konzument,
+- komunikaci procesů přes sdílené fronty,
+- bezpečné ukončení worker procesů.
 
 ## 3. Struktura projektu
 src/
@@ -31,15 +38,16 @@ markdown
 Zkopírovat kód
 
 ### PyCharm:
-1. Označit `src/` jako **Sources Root**
+1. Kliknout pravým na `src/` → **Mark Directory as → Sources Root**
 2. Spustit `main.py`
 
 ## 5. Princip
-- Hlavní vlákno = producent  
-- Workeři = konzumenti  
-- Úlohy → fronta → parallel processing → log výsledků  
+- Hlavní proces = producent  
+- Worker procesy = konzumenti  
+- Úlohy → fronta → paralelní zpracování → výsledky  
 
 ## 6. Možnosti rozšíření
-- více typů úloh  
-- ukládání výsledků do souboru  
-- statistiky a měření času  
+- další typy textových úloh,
+- ukládání výsledků do souboru,
+- priority úloh,
+- webové API.

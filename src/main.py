@@ -5,7 +5,7 @@ def main():
     processor = TaskProcessor(worker_count=3)
     processor.start()
 
-    print("=== Parallel Task Processor ===")
+    print("=== Parallel Task Processor (multiprocessing) ===")
     print("Zadávej texty k paralelnímu zpracování.")
     print("Napiš 'exit' pro ukončení.\n")
 
@@ -26,12 +26,18 @@ def main():
         print("\nPřerušeno uživatelem (Ctrl+C).")
 
     print("Čekám na dokončení všech úloh...")
-    processor.task_queue.join()
 
-    processor.stop()
+    # počkáme, než se zpracují všechny dosud zadané úlohy
+    processor.wait_for_all_results()
+
+    # korektně ukončíme worker procesy
+    processor.shutdown()
+
+    # vypíšeme výsledky
     processor.print_results()
     print("Hotovo. Ukončuji program.")
 
 
 if __name__ == "__main__":
+    # kvůli multiprocessing na Windows tohle MUSÍ být
     main()
